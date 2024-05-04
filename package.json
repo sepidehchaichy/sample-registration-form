@@ -13,7 +13,6 @@
     "test:unit:dev": "cypress open --component"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.21",
     "pinia": "^2.0.32",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
