@@ -1,45 +1,4 @@
-<script setup >
-import { useSubscriptionStore } from '@/stores/subscription'
-import { computed } from '@vue/reactivity'
 
-const activePlan = computed(() => useSubscriptionStore().plan)
-const billing = computed(() => useSubscriptionStore().billing)
-
-defineEmits(['change-step'])
-
-const plans = [
-  {
-    id: 1,
-    name: 'arcade',
-    icon: 'icon-arcade.svg',
-    price: 9,
-  },
-  {
-    id: 2,
-    name: 'advanced',
-    icon: 'icon-advanced.svg',
-    price: 12,
-  },
-  {
-    id: 3,
-    name: 'pro',
-    icon: 'icon-pro.svg',
-    price: 15,
-  },
-]
-
-const switchBilling = () => {
-  if (billing.value === 'monthly') {
-    useSubscriptionStore().setBilling('yearly')
-  } else {
-    useSubscriptionStore().setBilling('monthly')
-  }
-}
-
-const switchPlan = (planId: number) => {
-  useSubscriptionStore().setPlan(planId)
-}
-</script>
 
 <template>
   <div class="flex flex-col justify-between w-full h-full">
@@ -148,3 +107,45 @@ const switchPlan = (planId: number) => {
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { useSubscriptionStore } from '@/stores/subscription'
+import { computed } from '@vue/reactivity'
+
+const activePlan = computed(() => useSubscriptionStore().plan)
+const billing = computed(() => useSubscriptionStore().billing)
+
+defineEmits(['change-step'])
+
+const plans = [
+  {
+    id: 1,
+    name: 'arcade',
+    icon: 'icon-arcade.svg',
+    price: 9,
+  },
+  {
+    id: 2,
+    name: 'advanced',
+    icon: 'icon-advanced.svg',
+    price: 12,
+  },
+  {
+    id: 3,
+    name: 'pro',
+    icon: 'icon-pro.svg',
+    price: 15,
+  },
+]
+
+const switchBilling = () => {
+  if (billing.value === 'monthly') {
+    useSubscriptionStore().setBilling('yearly')
+  } else {
+    useSubscriptionStore().setBilling('monthly')
+  }
+}
+
+const switchPlan = (planId: number) => {
+  useSubscriptionStore().setPlan(planId)
+}
+</script>

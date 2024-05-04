@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-screen bg-brand-magnolia">
+  <div class="w-full h-screen bg-brand-magnolia">
     <div class="flex justify-center items-center h-full w-full">
       <div
         class="w-full max-w-[940px] h-2/3 bg-white rounded-2xl drop-shadow-sm"
@@ -42,11 +42,6 @@
             <div
               class="w-full h-full bg-brand-purplish-blue absolute top-0 -z-20"
             ></div>
-            <!-- <img
-              src="/images/bg-sidebar-desktop.svg"
-              class="w-full absolute bottom-0 -z-10"
-              alt="sidebar svg"
-            /> -->
           </div>
           <div class="flex-[0.7] h-full">
             <div
@@ -73,14 +68,15 @@
   </div>
 </template>
 
-<script setup >
-import { ref } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue'
 import StepOneComponent from './StepOneComponent.vue'
 import StepTwoComponent from './StepTwoComponent.vue'
 import StepThreeComponent from './StepThreeComponent.vue'
 import ConfirmComponent from './ConfirmComponent.vue'
 
 const activeStep = ref(1)
+
 const steps = [
   {
     id: 1,
@@ -103,5 +99,4 @@ const steps = [
 const changeStep = (step: number) => {
   activeStep.value = step
 }
-
 </script>

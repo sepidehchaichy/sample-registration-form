@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -17,6 +14,9 @@ export default {
         'brand-magnolia': 'hsl(217, 100%, 97%)',
         'brand-alabaster': 'hsl(231, 100%, 99%)',
         'brand-white': 'hsl(0, 0%, 100%)',
+      },
+      fontSize: {
+        body: '16px',
       },
     },
   },

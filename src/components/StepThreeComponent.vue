@@ -1,4 +1,4 @@
-<script setup >
+<script setup lang="ts">
 import { useSubscriptionStore } from '@/stores/subscription'
 
 defineEmits(['change-step'])

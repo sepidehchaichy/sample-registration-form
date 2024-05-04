@@ -1,60 +1,3 @@
-<script setup >
-import { useSubscriptionStore } from '@/stores/subscription'
-import { ref } from 'vue'
-
-const name = ref('')
-const email = ref('')
-const phone = ref('')
-const showValidationErrors = ref(false)
-const invalidEmail = ref(false)
-
-const emit = defineEmits(['change-step'])
-
-const updateName = () => {
-  useSubscriptionStore().setName(name.value)
-}
-
-const updateEmail = () => {
-  useSubscriptionStore().setEmail(email.value)
-}
-
-const updatePhone = () => {
-  useSubscriptionStore().setPhone(phone.value)
-}
-
-const validateEmail = (email: string) => {
-  const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
-  const regex = new RegExp(pattern)
-
-  return regex.test(email)
-}
-
-const validateStepOne = () => {
-  name.value =
-    typeof name.value === 'string' && name.value.trim().length > 0
-      ? name.value
-      : ''
-  email.value =
-    typeof email.value === 'string' && email.value.trim().length > 0
-      ? email.value
-      : ''
-  phone.value =
-    typeof phone.value === 'string' && phone.value.trim().length >= 10
-      ? phone.value
-      : ''
-
-  if (name.value && email.value && phone.value) {
-    if (validateEmail(email.value)) {
-      invalidEmail.value = false
-      emit('change-step', 2)
-    } else {
-      invalidEmail.value = true
-    }
-  } else {
-    showValidationErrors.value = true
-  }
-}
-</script>
 
 <template>
   <div class="flex flex-col justify-between w-full h-full">
@@ -159,3 +102,60 @@ const validateStepOne = () => {
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { useSubscriptionStore } from '@/stores/subscription'
+import { ref } from 'vue'
+
+const name = ref('')
+const email = ref('')
+const phone = ref('')
+const showValidationErrors = ref(false)
+const invalidEmail = ref(false)
+
+const emit = defineEmits(['change-step'])
+
+const updateName = () => {
+  useSubscriptionStore().setName(name.value)
+}
+
+const updateEmail = () => {
+  useSubscriptionStore().setEmail(email.value)
+}
+
+const updatePhone = () => {
+  useSubscriptionStore().setPhone(phone.value)
+}
+
+const validateEmail = (email: string) => {
+  const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
+  const regex = new RegExp(pattern)
+
+  return regex.test(email)
+}
+
+const validateStepOne = () => {
+  name.value =
+    typeof name.value === 'string' && name.value.trim().length > 0
+      ? name.value
+      : ''
+  email.value =
+    typeof email.value === 'string' && email.value.trim().length > 0
+      ? email.value
+      : ''
+  phone.value =
+    typeof phone.value === 'string' && phone.value.trim().length >= 10
+      ? phone.value
+      : ''
+
+  if (name.value && email.value && phone.value) {
+    if (validateEmail(email.value)) {
+      invalidEmail.value = false
+      emit('change-step', 2)
+    } else {
+      invalidEmail.value = true
+    }
+  } else {
+    showValidationErrors.value = true
+  }
+}
+</script>

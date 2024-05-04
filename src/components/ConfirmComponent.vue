@@ -3,11 +3,6 @@
 <template>
   <div class="w-full h-full flex justify-center items-center">
     <div class="flex flex-col items-center">
-      <!-- <img
-        src="/images/icon-thank-you.svg"
-        alt="thank you"
-        class="w-14 md:w-auto mb-4 md:mb-8"
-      /> -->
       <div
         class="brand-bold text-2xl md:text-4xl text-brand-marine-blue mb-2 md:mb-4"
       >
@@ -21,6 +16,3 @@
     </div>
   </div>
 </template>
-<!-- <scripts setup lang="ts">
-
-</scripts> -->
