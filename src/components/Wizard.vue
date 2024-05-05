@@ -1,100 +1,195 @@
 <template>
-
- <div class="w-full h-screen bg-brand-magnolia"> 
-    <div class="flex justify-center items-center h-full w-full">
-      <div
-        class="w-full max-w-[940px] h-2/3 bg-white rounded-2xl drop-shadow-sm">
-        <div class="w-full h-full flex p-3">
-          <div
-            class="w-[280px] flex-[0.3] h-full rounded-xl relative overflow-hidden">
-            <div class="flex flex-col gap-8 w-full h-full px-8 py-10">
-              <div v-for="step in steps" :key="step.id">
-                <div class="flex items-center gap-4">
-                  <div
-                    :class="`w-8 h-8 rounded-full border border-brand-white ${
-                      activeStep === step.id && 'bg-brand-light-blue'
-                    } overflow-hidden`">
-                    <div
-                      :class="`w-full h-full flex justify-center items-center text-sm ${
-                        activeStep === step.id
-                          ? 'text-brand-marine-blue brand-bold'
-                          : 'text-brand-alabaster brand-medium'
-                      }`">
-                      {{ step.id }}
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      class="text-xs brand-regular text-brand-light-gray uppercase mb-0.5">
-                      step {{ step.id }}
-                    </div>
-                    <div class="text-sm brand-bold text-brand-white uppercase">
-                      {{ step.title }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="w-full h-full bg-brand-purplish-blue absolute top-0 -z-20"
-            ></div>
+  <div class="grid grid-cols-3 gap-4">
+    <div v-for="step in steps" :key="step.id">
+      <div>
+        <div
+          :class="`w-8 h-8 rounded-full border border-brand-white ${activeTab === step.id && 'bg-brand-light-blue'} overflow-hidden`">
+          <div :class="`w-full h-full flex justify-center items-center text-sm ${activeTab === step.id
+            ? 'text-brand-marine-blue brand-bold'
+            : 'text-brand-alabaster brand-medium'}`">
+            {{ step.id }}
           </div>
-          <div class="flex-[0.7] h-full">
-            <div
-              class="flex flex-col justify-between w-full h-full px-24 pt-10 pb-5">
-              <StepOneComponent
-                v-show="activeStep === 1"
-                @change-step="changeStep"/>
-              <StepTwoComponent
-                v-show="activeStep === 2"
-                @change-step="changeStep"/>
-              <StepThreeComponent
-                v-show="activeStep === 3"
-                @change-step="changeStep"/>
-              <ConfirmComponent v-show="activeStep === 0" />
-            </div>
+        </div>
+        <div>
+          <div class="text-xs brand-regular text-brand-light-gray uppercase mb-0.5">
+            step {{ step.id }}
           </div>
         </div>
       </div>
     </div>
-  </div>  
+  </div>
+  <div class="flex-[0.7] h-full" v-show="activeTab === 1">
+    <div class="flex flex-col justify-between w-full h-full px-24 pt-10 pb-5">
+      <div class="flex flex-col justify-between w-full h-full">
+    <div class="w-full">
+      <div class="text-2xl md:text-4xl brand-bold text-brand-marine-blue mb-2">
+        Personal Information
+      </div>
+      <div class="text-body brand-regular text-brand-cool-gray mb-6">
+        Please provide your Username 
+      </div>
+      <div class="mb-6">
+        <div class="flex justify-between items-center mb-0.5 md:mb-2">
+          <div class="text-xs md:text-sm brand-regular capitalize text-brand-marine-blue">
+            Username:
+          </div>
+        </div>
+        <input id="username" name="username" type="text" v-model="userName" placeholder="e.g. sepide248"
+          class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"
+          :class="!userName && validationErrorsUsername && 'border-brand-strawberry-red'" />
+          <div v-if="validationErrorsUsername" class="text-xs brand-bold text-brand-strawberry-red">
+            Invalid Username
+          </div>
+      </div>
+    </div>
+  </div>
+      <!-- <StepOneComponent v-show="activeTab === 1" @next-step="changeStep" /> -->
+      <!-- <StepTwoComponent v-show="activeTab === 2" @next-step="changeStep" />
+      <StepReviewComponent v-show="activeTab === 0" /> -->
+    </div>
+  </div>
+  <div class="flex-[0.7] h-full" v-show="activeTab === 2" >
+    <div class="flex flex-col justify-between w-full h-full px-24 pt-10 pb-5">
+      <div class="text-body brand-regular text-brand-cool-gray mb-6">
+        Please provide email address
+      </div>
+      <div class="mb-6">
+        <div class="flex justify-between items-center mb-0.5 md:mb-2">
+          <div
+            class="text-xs md:text-sm brand-regular capitalize text-brand-marine-blue">
+            email address
+          </div>
+          <div v-if="!email && validationErrorsEmail" class="text-xs brand-bold text-brand-strawberry-red">
+            The email field is required
+          </div>
+        </div>
+        <input  id="email" name="email" v-model="email" type="email" placeholder="e.g. sepideh@gmail.com" class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"
+          v-bind:class="!email && validationErrorsEmail && 'border-brand-strawberry-red'"
+        />
+        <div v-if="invalidEmail" class="text-xs brand-bold text-brand-strawberry-red">
+            The email field is invalid
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-[0.7] h-full" v-show="activeTab === 3" >
+    <div class="flex flex-col justify-between w-full h-full px-24 pt-10 pb-5">
+      <div class="text-body brand-regular text-brand-cool-gray mb-6">
+        Review Information
+      </div>
+      <div class="mb-6">
+        <div class="flex justify-between items-center mb-0.5 md:mb-2">
+          <div class="text-xs md:text-sm brand-regular capitalize text-brand-marine-blue">
+            Username:
+          </div>
+        </div>
+        <input readonly id="username" name="username" type="text" v-model="userName" 
+          class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"/>
+      </div>
+      <div class="mb-6">
+        <div class="flex justify-between items-center mb-0.5 md:mb-2">
+          <div
+            class="text-xs md:text-sm brand-regular capitalize text-brand-marine-blue">
+            email address
+          </div>
+        </div>
+        <input readonly  id="email" name="email" v-model="email" type="email"  class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"     
+        />
+      </div>
+    </div>
+  </div>
+  <div  class="flex justify-between items-center w-full absolute bottom-[-146px] right-0 pb-4 md:static" >
+      <button id="btn-prev" :disabled="activeTab === 1" :class="{'bg-sky-100':activeTab === 1}" class="h-10 md:h-12 px-4 md:px-6 capitalize brand-regular text-sm md:text-body text-brand-alabaster bg-brand-marine-blue rounded md:rounded-lg"
+        @click="PrevStep(activeTab)"> Prev
+      </button>
+      <button :disabled="activeTab === 3" id="btn-next" :class="{'bg-sky-100':activeTab === 3}"  class="h-10 md:h-12 px-4 md:px-6 capitalize brand-regular text-sm md:text-body text-brand-alabaster bg-brand-marine-blue rounded md:rounded-lg"
+        @click="checkValidation">
+        Next 
+      </button>
+    </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import StepOneComponent from './StepOneComponent.vue'
-import StepTwoComponent from './StepTwoComponent.vue'
-import StepThreeComponent from './StepThreeComponent.vue'
-import ConfirmComponent from './ConfirmComponent.vue'
+// import StepOneComponent from '@/components/StepOneComponent.vue'
+// import StepTwoComponent from '@/components/StepTwoComponent.vue'
+// import StepReviewComponent from '@/components/StepReviewComponent.vue';
+import { ref, type Ref } from "vue";
+import { userInfoStore } from '@/stores/userInfoStore';
 
-const activeStep = ref(1)
-
+const activeTab: Ref<number> = ref(1);
+const userName: Ref<string> = ref('');
+const email: Ref<string> = ref('');
+const validationErrorsUsername: Ref<boolean> = ref(false);
+const validationErrorsEmail: Ref<boolean> = ref(false);
+const invalidEmail = ref(false);
+const emit = defineEmits(['next-step'])
 const steps = [
   {
     id: 1,
-    title: 'your info',
+    title: 'UserName',
   },
   {
     id: 2,
-    title: 'select plan',
+    title: 'Email',
   },
   {
     id: 3,
-    title: 'add-ons',
-  },
-  {
-    id: 4,
-    title: 'summary',
-  },
+    title: 'Review',
+  }
 ]
 
-const changeStep = (step: number) => {
-  activeStep.value = step
+const checkValidation = () => {
+ if(activeTab.value === 1){
+  validateStepOne()
+ } 
+ else if(activeTab.value === 2) {
+  validateStepTwo()
+ }
 }
-</script>
+const validateStepOne = () => {
+  userName.value = typeof userName.value === 'string' && userName.value.trim().length > 0 ? userName.value : '';
+  var pattern = /^[a-zA-Z]*$/;
+  if (!!userName.value && pattern.test(userName.value) && userName.value.length > 3 && userName.value.length <= 15) {
+    activeTab.value = 2;
+    validationErrorsUsername.value = false;
+    setUsernameValue();
+  } else {
+    validationErrorsUsername.value = true;
+  }
+}
 
+const validateStepTwo = () => {
+  const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
+  if (!!email.value && pattern.test(email.value) ) {
+    activeTab.value = 3;
+    validationErrorsEmail.value = false;
+    setEmailValue();
+  } else {
+    validationErrorsEmail.value = true;
+  }
+}
+
+// const changeStep = (step: number) => {
+//   debugger
+//   activeTab.value = step;
+// }
+
+const PrevStep = (step: number) => {
+  activeTab.value = step-1;
+}
+
+
+const setUsernameValue = () => {
+  userInfoStore().setUsername(userName.value)
+}
+
+const setEmailValue = () => {
+  userInfoStore().setEmail(email.value)
+}
+
+</script>
 
 <style scoped>
 .p-stepper {
-    flex-basis: 40rem;
+  flex-basis: 40rem;
 }
 </style>
