@@ -31,13 +31,11 @@ import { Ref, ref, watch } from 'vue';
 const description: Ref<string> = ref('');
 const validationErrorsMsg: Ref<boolean> = ref(false);
     watch(() => description.value, () => {
-    checkvalidation()
+    checkvalidation();
 })
 
 
 const checkvalidation = () => {
-if (description.value.match("word1(.*)Word2")[1]){
-    validationErrorsMsg.value = true;
-}
+
 }
 </script>
