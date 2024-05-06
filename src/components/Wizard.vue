@@ -12,13 +12,13 @@
         </div>
         <div>
           <div class="text-xs brand-regular text-brand-light-gray uppercase mb-0.5">
-            step {{ step.id }}
+            Step {{ step.id }}
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="flex-[0.7] h-full" v-show="activeTab === 1">
+  <div class="flex-[0.7] h-full" >
     <div class="flex flex-col justify-between w-full h-full px-24 pt-10 pb-5">
       <div class="flex flex-col justify-between w-full h-full">
     <div class="w-full">
@@ -26,9 +26,9 @@
         Personal Information
       </div>
       <div class="text-body brand-regular text-brand-cool-gray mb-6">
-        Please provide your Username 
+        Please provide your Information
       </div>
-      <div class="mb-6">
+      <div class="mb-6" v-show="activeTab === 1">
         <div class="flex justify-between items-center mb-0.5 md:mb-2">
           <div class="text-xs md:text-sm brand-regular capitalize text-brand-marine-blue">
             Username:
@@ -41,41 +41,31 @@
             Invalid Username
           </div>
       </div>
-    </div>
-  </div>
-      <!-- <StepOneComponent v-show="activeTab === 1" @next-step="changeStep" /> -->
-      <!-- <StepTwoComponent v-show="activeTab === 2" @next-step="changeStep" />
-      <StepReviewComponent v-show="activeTab === 0" /> -->
-    </div>
-  </div>
-  <div class="flex-[0.7] h-full" v-show="activeTab === 2" >
-    <div class="flex flex-col justify-between w-full h-full px-24 pt-10 pb-5">
-      <div class="text-body brand-regular text-brand-cool-gray mb-6">
-        Please provide email address
-      </div>
-      <div class="mb-6">
+      <div class="mb-6" v-show="activeTab === 2" >
         <div class="flex justify-between items-center mb-0.5 md:mb-2">
           <div
             class="text-xs md:text-sm brand-regular capitalize text-brand-marine-blue">
-            email address
+            Email:
           </div>
           <div v-if="!email && validationErrorsEmail" class="text-xs brand-bold text-brand-strawberry-red">
             The email field is required
           </div>
         </div>
-        <input  id="email" name="email" v-model="email" type="email" placeholder="e.g. sepideh@gmail.com" class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"
-          v-bind:class="!email && validationErrorsEmail && 'border-brand-strawberry-red'"
+        <input id="email" name="email" v-model="email" type="email" placeholder="e.g. sepideh@gmail.com" class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"
+          :class="!email && validationErrorsEmail && 'border-brand-strawberry-red'"
         />
-        <div v-if="invalidEmail" class="text-xs brand-bold text-brand-strawberry-red">
+        <div v-if="validationErrorsEmail" class="text-xs brand-bold text-brand-strawberry-red">
             The email field is invalid
           </div>
       </div>
     </div>
   </div>
+    </div>
+  </div>
   <div class="flex-[0.7] h-full" v-show="activeTab === 3" >
     <div class="flex flex-col justify-between w-full h-full px-24 pt-10 pb-5">
       <div class="text-body brand-regular text-brand-cool-gray mb-6">
-        Review Information
+        Review
       </div>
       <div class="mb-6">
         <div class="flex justify-between items-center mb-0.5 md:mb-2">
@@ -98,7 +88,7 @@
       </div>
     </div>
   </div>
-  <div  class="flex justify-between items-center w-full absolute bottom-[-146px] right-0 pb-4 md:static" >
+  <div class="flex justify-between items-center w-full absolute bottom-[-146px] right-0 pb-4 md:static" >
       <button id="btn-prev" :disabled="activeTab === 1" :class="{'bg-sky-100':activeTab === 1}" class="h-10 md:h-12 px-4 md:px-6 capitalize brand-regular text-sm md:text-body text-brand-alabaster bg-brand-marine-blue rounded md:rounded-lg"
         @click="PrevStep(activeTab)"> Prev
       </button>
@@ -113,15 +103,12 @@
 // import StepTwoComponent from '@/components/StepTwoComponent.vue'
 // import StepReviewComponent from '@/components/StepReviewComponent.vue';
 import { ref, type Ref } from "vue";
-import { userInfoStore } from '@/stores/userInfoStore';
 
 const activeTab: Ref<number> = ref(1);
 const userName: Ref<string> = ref('');
 const email: Ref<string> = ref('');
 const validationErrorsUsername: Ref<boolean> = ref(false);
 const validationErrorsEmail: Ref<boolean> = ref(false);
-const invalidEmail = ref(false);
-const emit = defineEmits(['next-step'])
 const steps = [
   {
     id: 1,
@@ -151,43 +138,25 @@ const validateStepOne = () => {
   if (!!userName.value && pattern.test(userName.value) && userName.value.length > 3 && userName.value.length <= 15) {
     activeTab.value = 2;
     validationErrorsUsername.value = false;
-    setUsernameValue();
   } else {
     validationErrorsUsername.value = true;
   }
 }
 
 const validateStepTwo = () => {
-  const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
+  const pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  debugger
   if (!!email.value && pattern.test(email.value) ) {
     activeTab.value = 3;
     validationErrorsEmail.value = false;
-    setEmailValue();
   } else {
     validationErrorsEmail.value = true;
   }
 }
-
-// const changeStep = (step: number) => {
-//   debugger
-//   activeTab.value = step;
-// }
-
 const PrevStep = (step: number) => {
   activeTab.value = step-1;
 }
-
-
-const setUsernameValue = () => {
-  userInfoStore().setUsername(userName.value)
-}
-
-const setEmailValue = () => {
-  userInfoStore().setEmail(email.value)
-}
-
 </script>
-
 <style scoped>
 .p-stepper {
   flex-basis: 40rem;
