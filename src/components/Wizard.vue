@@ -38,7 +38,7 @@
           class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"
           :class="!userName && validationErrorsUsername && 'border-brand-strawberry-red'" />
           <div v-if="validationErrorsUsername" class="text-xs brand-bold text-brand-strawberry-red">
-            Invalid Username
+            Invalid Username.
           </div>
       </div>
       <div class="mb-6" v-show="activeTab === 2" >
@@ -47,16 +47,12 @@
             class="text-xs md:text-sm brand-regular capitalize text-brand-marine-blue">
             Email:
           </div>
-          <div v-if="!email && validationErrorsEmail" class="text-xs brand-bold text-brand-strawberry-red">
-            The email field is required
-          </div>
         </div>
-        <input id="email" name="email" v-model="email" type="email" placeholder="e.g. sepideh@gmail.com" class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"
-          :class="!email && validationErrorsEmail && 'border-brand-strawberry-red'"
-        />
+        <input id="email" name="email" v-model="email" type="text" placeholder="e.g. sepideh@gmail.com" class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"
+          :class="!email && validationErrorsEmail && 'border-brand-strawberry-red'"/>
         <div v-if="validationErrorsEmail" class="text-xs brand-bold text-brand-strawberry-red">
-            The email field is invalid
-          </div>
+          Invalid email address.     
+        </div>
       </div>
     </div>
   </div>
@@ -65,7 +61,7 @@
   <div class="flex-[0.7] h-full" v-show="activeTab === 3" >
     <div class="flex flex-col justify-between w-full h-full px-24 pt-10 pb-5">
       <div class="text-body brand-regular text-brand-cool-gray mb-6">
-        Review
+        Step: review
       </div>
       <div class="mb-6">
         <div class="flex justify-between items-center mb-0.5 md:mb-2">
@@ -73,18 +69,20 @@
             Username:
           </div>
         </div>
-        <input readonly id="username" name="username" type="text" v-model="userName" 
-          class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"/>
+        <span class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue">
+          {{ userName }}
+        </span>
       </div>
       <div class="mb-6">
         <div class="flex justify-between items-center mb-0.5 md:mb-2">
           <div
             class="text-xs md:text-sm brand-regular capitalize text-brand-marine-blue">
-            email address
+            Email:
           </div>
         </div>
-        <input readonly  id="email" name="email" v-model="email" type="email"  class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"     
-        />
+        <span class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue">
+          {{ email }}
+        </span>        
       </div>
     </div>
   </div>
@@ -99,11 +97,7 @@
     </div>
 </template>
 <script setup lang="ts">
-// import StepOneComponent from '@/components/StepOneComponent.vue'
-// import StepTwoComponent from '@/components/StepTwoComponent.vue'
-// import StepReviewComponent from '@/components/StepReviewComponent.vue';
 import { ref, type Ref } from "vue";
-
 const activeTab: Ref<number> = ref(1);
 const userName: Ref<string> = ref('');
 const email: Ref<string> = ref('');
@@ -134,7 +128,7 @@ const checkValidation = () => {
 }
 const validateStepOne = () => {
   userName.value = typeof userName.value === 'string' && userName.value.trim().length > 0 ? userName.value : '';
-  var pattern = /^[a-zA-Z]*$/;
+  var pattern = /^[a-zA-Z]\S*$/;
   if (!!userName.value && pattern.test(userName.value) && userName.value.length > 3 && userName.value.length <= 15) {
     activeTab.value = 2;
     validationErrorsUsername.value = false;
@@ -144,8 +138,7 @@ const validateStepOne = () => {
 }
 
 const validateStepTwo = () => {
-  const pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  debugger
+  const pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
   if (!!email.value && pattern.test(email.value) ) {
     activeTab.value = 3;
     validationErrorsEmail.value = false;

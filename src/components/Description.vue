@@ -16,7 +16,7 @@
           class="text-body brand-medium placeholder-brand-cool-gray h-10 md:h-12 px-4 border border-brand-light-gray rounded md:rounded-lg w-full outline-none hover:border-brand-purplish-blue focus:border-brand-purplish-blue"
           :class="!description && validationErrorsMsg && 'border-brand-strawberry-red'" />
           <div v-if="validationErrorsMsg" class="text-xs brand-bold text-brand-strawberry-red">
-            Invalid Description
+            The text is not balanced.
           </div>
       </div>
 
@@ -27,8 +27,17 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, ref } from 'vue';
+import { Ref, ref, watch } from 'vue';
 const description: Ref<string> = ref('');
 const validationErrorsMsg: Ref<boolean> = ref(false);
+    watch(() => description.value, () => {
+    checkvalidation()
+})
 
+
+const checkvalidation = () => {
+if (description.value.match("word1(.*)Word2")[1]){
+    validationErrorsMsg.value = true;
+}
+}
 </script>
